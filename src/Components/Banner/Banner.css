@@ -1,0 +1,57 @@
+.banner{
+    display: none;
+    background-size: cover;
+    position: relative;
+    height: 110vh;
+    width: 100;
+    
+}
+.actor-container{
+    display: flex;
+    flex-direction: row;
+    color: white;
+    justify-content: space-around;
+
+}.text{
+    position: absolute;
+    top: 10vh;
+    padding: 30px;
+
+}
+.text h1{
+    color: white;
+    font-style: normal;
+    font-weight: 500;
+    font-variant: small-caps;
+    font-size: 10vh;
+    line-height: 7vh;
+    max-width: 40vw;
+    padding-bottom: 4vh;
+
+}
+.text p{
+    font-size: 18px;
+    max-width: 35vw;
+    color : #fff;
+    padding-bottom: 4vh;
+    background-color: rgb(255, 255, 255, 0.03);
+}
+
+@media only screen and (min-width: 1200px) {
+    /* Show banner on devices with minimum width of 768px (tablet and desktop) */
+    .banner {
+      display: block;
+    }
+  }
+
+  @media only screen and (max-width: 1200px) {
+
+  }
+  @media only screen and (max-width: 800px) {
+    .text{
+        /* position: absolute; */
+        /* top: 25vh; */
+        /* padding: 30px; */
+        border: 2px solid red;
+      }
+}
