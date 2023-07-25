@@ -1,70 +1,53 @@
-// import React from 'react'
-// import './movieDetails.scss'
-
-// const MovieDetails = ({MovieDetails}) => {
-//     console.log(MovieDetails)
-//     console.log('movieDetails....above;,,,,,,,,,,,,,,,,,,,,,,,,')
-//   return (
-//     <div>
-//         <h1>movie Details</h1>
-//       <h1>{MovieDetails ? MovieDetails.original_title : ""}</h1>
-//     </div>
-//   )
-// }
-
-// export default MovieDetails
-
-
-
-
-// import React from 'react'
-
-// const MovieDetails = ({ movieDetails }) => {
-//   return (
-//     <div className="modal">
-//       <div className="modal__content">
-//         <div className="modal__header">
-//           <h1 className="modal__title">{movieDetails.original_title}</h1>
-//           <button className="modal__close-btn">&times;</button>
-//         </div>
-//         <div className="modal__body">
-//           <div className="modal__poster">
-//             <img src={`https://image.tmdb.org/t/p/w500/${movieDetails.poster_path}`} alt={movieDetails.original_title} />
-//           </div>
-//           <div className="modal__details">
-//             <p><strong>Release Date:</strong> {movieDetails.release_date}</p>
-//             <p><strong>Runtime:</strong> {movieDetails.runtime} min</p>
-//             <p><strong>Overview:</strong> {movieDetails.overview}</p>
-//             <p><strong>Genres:</strong> {movieDetails.genres.map(genre => genre.name).join(', ')}</p>
-//             <p><strong>Tagline:</strong> {movieDetails.tagline}</p>
-//             <p><strong>Vote Average:</strong> {movieDetails.vote_average}</p>
-//             <p><strong>Vote Count:</strong> {movieDetails.vote_count}</p>
-//           </div>
-//         </div>
-//       </div>
-//     </div>
-//   )
-// }
-
-// export default MovieDetails
-
-import React from 'react'
 import './MovieDetails.scss'
+import { useEffect, useParams, BaseUrl, axios, useState, LoadingModal } from '../index'
+
+const api_read_token = process.env.REACT_APP_API_READ_TOKEN
+const api_key = process.env.REACT_APP_API_KEY;
 
 const MovieDetails = ({ movieDetails, onClose }) => {
-  console.log(movieDetails)
-  console.log('movie details in movieDetails.js')
+  const [fullMovieDetails, setFullMovieDetails] = useState([]);
+  const { movieId } = useParams();
 
-  // Movie Genres
-  const genres = movieDetails.genres.map((genre) => genre.name).join(', ')
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        ('movieId:', movieId); 
 
-  // Movie Runtime
-  // const hours = Math.floor(movieDetails.runtime / 60)
-  // const minutes = movieDetails.runtime % 60
-  // const runtime = `${hours}h ${minutes}min`
-  if (!movieDetails) {
-    return <div>Loading...</div>;
-    alert('no movie details')
+        if (!movieId) {
+          return; 
+        }
+
+        const url = `${BaseUrl}/3/movie/${movieId}`;
+        const headers = {
+          'Accept': 'application/json',
+          'Authorization': `Bearer ${api_read_token}`
+        };
+
+        const response = await axios.get(url, { headers });
+        setFullMovieDetails(response.data);
+        ('response:', response.data);
+      } catch (error) {
+        console.error('Error fetching movie details:', error);
+      }
+    };
+
+    fetchData();
+  }, [movieId]);
+
+
+
+
+
+
+
+
+
+
+
+
+
+  if (!fullMovieDetails) {
+    return <div> <LoadingModal /> </div>;
   }
 
 
@@ -72,18 +55,18 @@ const MovieDetails = ({ movieDetails, onClose }) => {
     <div className='modal'>
       <div className='modal__content'>
         <div className='modal__header'>
-          <h1 className='modal__title'>{movieDetails.original_title}</h1>
+          <h1 className='modal__title'>{fullMovieDetails.original_title}</h1>
           <button className='modal__close' onClick={onClose}>
             <i className="fas fa-times"></i>
           </button>
         </div>
         <div className='modal__body'>
-          <img src={`https://image.tmdb.org/t/p/w500/${movieDetails.poster_path}`} alt={movieDetails.title} className='modal__poster' />
+          <img src={`https://image.tmdb.org/t/p/w500/${fullMovieDetails.poster_path}`} alt={fullMovieDetails.title} className='modal__poster' />
           <div className='modal__details'>
             {/* <p><strong>Genres:</strong> {genres}</p> */}
-            <p><strong>Release Date:</strong> {movieDetails.release_date}</p>
+            <p><strong>Release Date:</strong> {fullMovieDetails.release_date}</p>
             {/* <p><strong>Runtime:</strong> {runtime}</p> */}
-            <p><strong>Overview:</strong> {movieDetails.overview}</p>
+            <p><strong>Overview:</strong> {fullMovieDetails.overview}</p>
           </div>
         </div>
       </div>

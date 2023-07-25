@@ -3,6 +3,7 @@ import './ActorCard.css'
 import { Card, Button } from 'react-bootstrap'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faThumbsUp } from '@fortawesome/fontawesome-free-solid'
+const APIKey = process.env.REACT_APP_API_KEY
 
 
 const ActorCard = (props) => {
